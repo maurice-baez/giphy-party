@@ -4,23 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Giphy Party!</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="header">
+    <h1 class="title"> Giphy Party</h1>
 
-  <h1> Giphy Party</h1>
-
-  <div class="form-contain">
-    <form action="#">
-      <input id="gif" type="text" placeholder="Enter a search term"><button id="search">Search Giphy</button><button id="remove">Remove Images</button>
-    </form>
+    <div class="form-contain">
+      <form action="#" id="form">
+        <input id="gif" type="text" placeholder="Enter a search term"><button id="search">Search Giphy</button><button
+          id="remove">Remove Images</button>
+      </form>
+    </div>
   </div>
 
   <div class="display"></div>
 
-<script src="https://unpkg.com/jquery"></script>
-<script src="https://unpkg.com/axios/dist/axios.js"></script>
-<script src="app.js"></script>
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>

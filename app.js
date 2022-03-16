@@ -1,30 +1,22 @@
 "use strict";
 
-/*Create an async function creating an api request to the giphy server
-
-grab the data thats returned, input into another function to append to the DOM
-
-the info we'll grab from the server is the url of the image
-
-We'll take the image and pass that to another function to append it to the DOM.
-
-We need to add event listeners to our search and remove buttons.
-
-We'll need a function to remove all images.*/
-
+const $form = $("#form")
 const $gifArea = $(".display");
 const $searchButton = $("#search");
 const $deleteButton = $("#remove");
 const key = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym";
 const apiBaseUrl = "http://api.giphy.com/v1/gifs/search";
 
+
 /** Add gif by appending server result to DOM */
 function appendGifToDom(url) {
   console.log("url =", url);
 
-  let $img = $("<img>");
+  const $img = $("<img>");
 
-  $img.attr("src", url);
+  $img
+  .attr("src", url)
+  .addClass("img");
 
   $gifArea.append($img);
 }
@@ -33,27 +25,29 @@ function appendGifToDom(url) {
 /**Gather information from search */
 async function getGif() {
 
-  let searchTerm = $("#gif").val();
+  const searchTerm = $("#gif").val();
 
-  let response = await axios.get(apiBaseUrl, { params: { q: searchTerm, api_key: key } });
+  const response = await axios.get(apiBaseUrl, { params: { q: searchTerm, api_key: key } });
 
-  console.log("resp=", response);
   //Get random number between 0-50
+  const gif = response.data.data[randomNumber(response.data.data.length -1)].images.original.url;
 
-  appendGifToDom(
-    response.data.data[randomNumber()].images.original.url);
+  appendGifToDom(gif);
 }
+
 
 /**Get random number between 0-50 */
-function randomNumber(){
-  return Math.floor(Math.random() * 50);
+function randomNumber(max) {
+  return Math.floor(Math.random() * max);
 }
 
+
 /** Remove images from DOM */
-function removeImages(){
-  console.log("function ran");
+function removeImages() {
   $gifArea.empty();
+  $form.trigger("reset");
 }
+
 
 $searchButton
   .on("click", getGif);
