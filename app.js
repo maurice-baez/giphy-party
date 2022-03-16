@@ -12,11 +12,16 @@ We need to add event listeners to our search and remove buttons.
 
 We'll need a function to remove all images.*/
 
+const $gifArea = $(".display");
+const $searchButton = $("#search");
+const $deleteButton = $("#remove");
+const key = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym";
+const apiBaseUrl = "http://api.giphy.com/v1/gifs/search";
+
 /** Add gif by appending server result to DOM */
-function addGif(url) {
+function appendGifToDom(url) {
   console.log("url =", url);
 
-  let $gifArea = $(".display");
   let $img = $("<img>");
 
   $img.attr("src", url);
@@ -27,24 +32,31 @@ function addGif(url) {
 
 /**Gather information from search */
 async function getGif() {
-  let searchTerm = $("#gif").val();
-  let key = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym";
 
-  let response = await axios.get("http://api.giphy.com/v1/gifs/search", { params: { q: searchTerm, api_key: key } });
+  let searchTerm = $("#gif").val();
+
+  let response = await axios.get(apiBaseUrl, { params: { q: searchTerm, api_key: key } });
 
   console.log("resp=", response);
   //Get random number between 0-50
-  let randomNumber = randomNumber()
-  addGif(response.data.data[randomNumber].images.original.url);
+
+  appendGifToDom(
+    response.data.data[randomNumber()].images.original.url);
 }
 
-const $searchButton = $("#search");
-const $deleteButton = $("#remove");
+/**Get random number between 0-50 */
+function randomNumber(){
+  return Math.floor(Math.random() * 50);
+}
+
+/** Remove images from DOM */
+function removeImages(){
+  console.log("function ran");
+  $gifArea.empty();
+}
 
 $searchButton
   .on("click", getGif);
 
-/**Get random number between 0-50 */
-function randomNumber(){
-  return Math.floor(Math.random() * 50)
-}
+$deleteButton
+  .on("click", removeImages);
